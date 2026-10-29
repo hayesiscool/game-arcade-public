@@ -1,282 +1,172 @@
-import { useMemo, useState } from 'react';
-import { games, categories, quickGames } from './data/games';
+export const platformFilters = ['All', 'NES', 'SNES', 'Genesis', 'Game Boy', 'Arcade', 'PS1'];
 
-const defaultView = 'All';
+export const retroGames = [
+  {
+    id: 1,
+    title: 'Super Mario Bros.',
+    platform: 'NES',
+    genre: 'Platformer',
+    era: '1985',
+    rating: '9.2',
+    description: 'Classic side-scrolling platform action with iconic pipes, enemies, and secrets.',
+    tags: ['platform', 'classic', 'arcade'],
+    url: 'https://www.retrogames.cc/',
+    color: 'linear-gradient(135deg, #f97316, #facc15)',
+    emulator: 'NES Emulator',
+  },
+  {
+    id: 2,
+    title: 'Sonic the Hedgehog',
+    platform: 'Genesis',
+    genre: 'Platformer',
+    era: '1991',
+    rating: '9.1',
+    description: 'Speed through loop-de-loops and hazardous zones at full throttle.',
+    tags: ['speed', 'classic', 'run'],
+    url: 'https://www.retrogames.cc/',
+    color: 'linear-gradient(135deg, #22c55e, #06b6d4)',
+    emulator: 'Genesis Emulator',
+  },
+  {
+    id: 3,
+    title: 'Street Fighter II',
+    platform: 'Arcade',
+    genre: 'Fighting',
+    era: '1992',
+    rating: '9.4',
+    description: 'Select your fighter and battle across a legendary arcade roster.',
+    tags: ['fighter', 'arcade', 'combo'],
+    url: 'https://archive.org/details/softwarelibrary_microsoftwindows_games',
+    color: 'linear-gradient(135deg, #ef4444, #f97316)',
+    emulator: 'Arcade Cabinet',
+  },
+  {
+    id: 4,
+    title: 'The Legend of Zelda',
+    platform: 'NES',
+    genre: 'Adventure',
+    era: '1986',
+    rating: '9.3',
+    description: 'Explore dungeons, solve puzzles, and uncover secrets in a vast world.',
+    tags: ['adventure', 'explore', 'puzzle'],
+    url: 'https://archive.org/',
+    color: 'linear-gradient(135deg, #84cc16, #22c55e)',
+    emulator: 'NES Emulator',
+  },
+  {
+    id: 5,
+    title: 'Chrono Trigger',
+    platform: 'SNES',
+    genre: 'RPG',
+    era: '1995',
+    rating: '9.5',
+    description: 'A timeless adventure through time, fate, and unforgettable companions.',
+    tags: ['rpg', 'story', 'fantasy'],
+    url: 'https://classicreload.com/',
+    color: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
+    emulator: 'SNES Emulator',
+  },
+  {
+    id: 6,
+    title: 'Pokemon Red',
+    platform: 'Game Boy',
+    genre: 'RPG',
+    era: '1996',
+    rating: '9.6',
+    description: 'Catch monsters, sharpen your team, and roam the Kanto region.',
+    tags: ['pokemon', 'capture', 'rpg'],
+    url: 'https://archive.org/',
+    color: 'linear-gradient(135deg, #f43f5e, #fb7185)',
+    emulator: 'Game Boy Emulator',
+  },
+  {
+    id: 7,
+    title: 'Castlevania',
+    platform: 'NES',
+    genre: 'Action',
+    era: '1986',
+    rating: '8.9',
+    description: 'Battle monsters through gothic corridors and treacherous boss fights.',
+    tags: ['action', 'boss', 'horror'],
+    url: 'https://www.retrogames.cc/',
+    color: 'linear-gradient(135deg, #1f2937, #6b7280)',
+    emulator: 'NES Emulator',
+  },
+  {
+    id: 8,
+    title: 'Final Fantasy VII',
+    platform: 'PS1',
+    genre: 'RPG',
+    era: '1997',
+    rating: '9.7',
+    description: 'An epic adventure with cinematic storytelling and long-form exploration.',
+    tags: ['story', 'rpg', 'classic'],
+    url: 'https://archive.org/',
+    color: 'linear-gradient(135deg, #38bdf8, #2563eb)',
+    emulator: 'PS1 Emulator',
+  },
+  {
+    id: 9,
+    title: 'Tetris',
+    platform: 'Game Boy',
+    genre: 'Puzzle',
+    era: '1984',
+    rating: '9.4',
+    description: 'Stack blocks, clear lines, and push your reflexes to the limit.',
+    tags: ['puzzle', 'arcade', 'classic'],
+    url: 'https://classicreload.com/',
+    color: 'linear-gradient(135deg, #14b8a6, #22c55e)',
+    emulator: 'Game Boy Emulator',
+  },
+  {
+    id: 10,
+    title: 'Donkey Kong',
+    platform: 'Arcade',
+    genre: 'Platformer',
+    era: '1981',
+    rating: '8.8',
+    description: 'A landmark arcade platformer that still feels instantly playable.',
+    tags: ['classic', 'arcade', 'jump'],
+    url: 'https://www.retrogames.cc/',
+    color: 'linear-gradient(135deg, #f59e0b, #ef4444)',
+    emulator: 'Arcade Cabinet',
+  },
+  {
+    id: 11,
+    title: 'Super Metroid',
+    platform: 'SNES',
+    genre: 'Action-Adventure',
+    era: '1994',
+    rating: '9.5',
+    description: 'A massive exploration-driven adventure with a moody sci-fi vibe.',
+    tags: ['metroidvania', 'explore', 'action'],
+    url: 'https://classicreload.com/',
+    color: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
+    emulator: 'SNES Emulator',
+  },
+  {
+    id: 12,
+    title: 'Mortal Kombat',
+    platform: 'Arcade',
+    genre: 'Fighting',
+    era: '1992',
+    rating: '9.0',
+    description: 'Violent finishing moves and fast rounds defined this arcade classic.',
+    tags: ['fighter', 'arcade', 'combat'],
+    url: 'https://archive.org/details/softwarelibrary_microsoftwindows_games',
+    color: 'linear-gradient(135deg, #f43f5e, #7c3aed)',
+    emulator: 'Arcade Cabinet',
+  },
+];
 
-function App() {
-  const [query, setQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState(defaultView);
-  const [selectedGame, setSelectedGame] = useState(games[0]);
+export const featuredConsole = {
+  name: 'RetroArcade Plus',
+  blurb: 'Publicly accessible classics from the golden age of gaming.',
+};
 
-  const filteredGames = useMemo(() => {
-    return games.filter((game) => {
-      const matchesCategory =
-        activeCategory === defaultView || game.category === activeCategory;
-      const matchesQuery =
-        query.trim() === '' ||
-        `${game.title} ${game.tags.join(' ')} ${game.description}`
-          .toLowerCase()
-          .includes(query.toLowerCase());
-      return matchesCategory && matchesQuery;
-    });
-  }, [query, activeCategory]);
-
-  return (
-    <div className="app-shell">
-      <header className="topbar">
-        <div className="brand-wrap">
-          <div className="brand-mark">A</div>
-          <div>
-            <p className="eyebrow">Arcade Portal</p>
-            <h1>Play public browser games</h1>
-          </div>
-        </div>
-
-        <nav className="top-actions">
-          <a href="#catalog">Catalog</a>
-          <a href="#mini-games">Quick Play</a>
-          <button className="primary-btn">Browse 1000+ titles</button>
-        </nav>
-      </header>
-
-      <main>
-        <section className="hero">
-          <div className="hero-copy">
-            <p className="pill">Free • Browser • Public Access</p>
-            <h2>Find your next favorite game in seconds.</h2>
-            <p className="subtext">
-              Discover retro classics, pixel adventures, puzzle challenges, and easy
-              casual games from public web sources designed for instant play.
-            </p>
-
-            <div className="hero-actions">
-              <button className="primary-btn" onClick={() => document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' })}>
-                Explore games
-              </button>
-              <button className="secondary-btn" onClick={() => document.getElementById('mini-games')?.scrollIntoView({ behavior: 'smooth' })}>
-                Play now
-              </button>
-            </div>
-
-            <div className="metrics">
-              <div>
-                <strong>1000+</strong>
-                <span>Curated titles</span>
-              </div>
-              <div>
-                <strong>24/7</strong>
-                <span>Instant play</span>
-              </div>
-              <div>
-                <strong>0</strong>
-                <span>Paywalls</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="hero-panel">
-            <div className="game-preview" style={{ background: selectedGame.color }}>
-              <span className="badge">Featured</span>
-              <h3>{selectedGame.title}</h3>
-              <p>{selectedGame.description}</p>
-              <div className="preview-meta">
-                <span>{selectedGame.category}</span>
-                <span>{selectedGame.difficulty}</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="catalog" id="catalog">
-          <div className="catalog-header">
-            <div>
-              <p className="eyebrow alt">Game Catalog</p>
-              <h3>Browse public titles</h3>
-            </div>
-            <label className="search-box">
-              <span>Search</span>
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search by title, tag, or style"
-              />
-            </label>
-          </div>
-
-          <div className="category-row">
-            {categories.map((category) => (
-              <button
-                key={category}
-                className={activeCategory === category ? 'chip active' : 'chip'}
-                onClick={() => setActiveCategory(category)}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-
-          <div className="card-grid">
-            {filteredGames.map((game) => (
-              <article key={game.id} className="game-card">
-                <div className="card-art" style={{ background: game.color }}>
-                  <span>{game.genre}</span>
-                </div>
-                <div className="card-body">
-                  <div className="card-topline">
-                    <h4>{game.title}</h4>
-                    <span>{game.rating}</span>
-                  </div>
-                  <p>{game.description}</p>
-                  <div className="tag-row">
-                    {game.tags.map((tag) => (
-                      <span key={tag} className="tag">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="card-footer">
-                    <small>
-                      {game.category} • {game.platform}
-                    </small>
-                    <button className="small-primary" onClick={() => setSelectedGame(game)}>
-                      Details
-                    </button>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mini-games" id="mini-games">
-          <div className="section-heading">
-            <p className="eyebrow alt">Quick Play</p>
-            <h3>Playable inside the app</h3>
-          </div>
-
-          <MemoryMatch />
-        </section>
-      </main>
-
-      {selectedGame && (
-        <div className="modal-backdrop" onClick={() => setSelectedGame(null)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <div>
-                <p className="eyebrow alt">Featured title</p>
-                <h3>{selectedGame.title}</h3>
-              </div>
-              <button className="close-btn" onClick={() => setSelectedGame(null)}>
-                ×
-              </button>
-            </div>
-
-            <div className="modal-content">
-              <div className="modal-art" style={{ background: selectedGame.color }}>
-                <span>{selectedGame.genre}</span>
-              </div>
-              <div className="modal-copy">
-                <p>{selectedGame.description}</p>
-                <ul>
-                  <li>Category: {selectedGame.category}</li>
-                  <li>Difficulty: {selectedGame.difficulty}</li>
-                  <li>Source: {selectedGame.source}</li>
-                  <li>Platform: {selectedGame.platform}</li>
-                </ul>
-                <div className="modal-actions">
-                  <a className="primary-btn" href={selectedGame.url} target="_blank" rel="noreferrer">
-                    Play now
-                  </a>
-                  <button className="secondary-btn" onClick={() => setSelectedGame(null)}>
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function MemoryMatch() {
-  const [cards, setCards] = useState(() => buildCards());
-  const [selected, setSelected] = useState([]);
-  const [matched, setMatched] = useState([]);
-  const [moves, setMoves] = useState(0);
-
-  function buildCards() {
-    const symbols = ['★', '▲', '●', '■', '♣', '✦'];
-    const entries = [...symbols, ...symbols].map((symbol, index) => ({
-      id: index,
-      symbol,
-      matched: false,
-    }));
-
-    return entries.sort(() => Math.random() - 0.5);
-  }
-
-  const handleClick = (cardIndex) => {
-    if (selected.length === 2 || matched.includes(cardIndex)) return;
-
-    const nextSelected = [...selected, cardIndex];
-    setSelected(nextSelected);
-
-    if (nextSelected.length === 2) {
-      setMoves((prev) => prev + 1);
-      const [first, second] = nextSelected;
-
-      if (cards[first].symbol === cards[second].symbol) {
-        setTimeout(() => {
-          setMatched((prev) => [...prev, first, second]);
-          setSelected([]);
-        }, 450);
-      } else {
-        setTimeout(() => setSelected([]), 700);
-      }
-    }
-  };
-
-  const resetGame = () => {
-    setCards(buildCards());
-    setSelected([]);
-    setMatched([]);
-    setMoves(0);
-  };
-
-  const finished = matched.length === cards.length;
-
-  return (
-    <div className="memory-game">
-      <div className="memory-header">
-        <div>
-          <h4>Memory Match</h4>
-          <p>{finished ? 'You solved it!' : 'Flip cards to find pairs.'}</p>
-        </div>
-        <div className="memory-stats">
-          <span>Moves: {moves}</span>
-          <button className="secondary-btn" onClick={resetGame}>Reset</button>
-        </div>
-      </div>
-
-      <div className="tile-grid">
-        {cards.map((card, index) => {
-          const isFaceUp = selected.includes(index) || matched.includes(index);
-          return (
-            <button
-              key={`${card.symbol}-${index}`}
-              className={isFaceUp ? 'tile revealed' : 'tile'}
-              onClick={() => handleClick(index)}
-            >
-              {isFaceUp ? card.symbol : '?'}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-export default App;
+export const platformStats = [
+  { label: 'Platforms', value: '6' },
+  { label: 'Titles', value: '12+' },
+  { label: 'Classic eras', value: '80s-2000s' },
+  { label: 'Instant access', value: 'Browser' },
+];

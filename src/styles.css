@@ -1,189 +1,206 @@
-export const categories = [
-  'All',
-  'Arcade',
-  'Puzzle',
-  'Racing',
-  'Action',
-  'Sports',
-  'Retro',
-  'Casual',
-];
+import { useMemo, useState } from 'react';
+import { platformFilters, retroGames, platformStats, featuredConsole } from './data/games';
 
-export const quickGames = [
-  {
-    id: 'memory-match',
-    name: 'Memory Match',
-    description: 'Match pairs before the timer ends.',
-  },
-];
+function App() {
+  const [query, setQuery] = useState('');
+  const [platform, setPlatform] = useState('All');
+  const [selectedGame, setSelectedGame] = useState(retroGames[0]);
 
-export const games = [
-  {
-    id: 1,
-    title: 'Neon Drift',
-    genre: 'Racing',
-    category: 'Racing',
-    difficulty: 'Medium',
-    rating: '4.8',
-    description: 'High-speed neon lanes built for endless arcade racing energy.',
-    tags: ['fast', 'arcade', 'street'],
-    source: 'Poki',
-    platform: 'Browser',
-    url: 'https://poki.com/en/g/racing',
-    color: 'linear-gradient(135deg, #f472b6, #8b5cf6)',
-  },
-  {
-    id: 2,
-    title: 'Pixel Quest',
-    genre: 'Adventure',
-    category: 'Action',
-    difficulty: 'Easy',
-    rating: '4.7',
-    description: 'A colorful journey through secret rooms, power-ups, and hidden loot.',
-    tags: ['pixel', 'adventure', 'platformer'],
-    source: 'CrazyGames',
-    platform: 'Browser',
-    url: 'https://www.crazygames.com/',
-    color: 'linear-gradient(135deg, #22c55e, #0ea5e9)',
-  },
-  {
-    id: 3,
-    title: '2048',
-    genre: 'Puzzle',
-    category: 'Puzzle',
-    difficulty: 'Easy',
-    rating: '4.9',
-    description: 'Slide tiles together and chase the perfect power-up chain.',
-    tags: ['logic', 'numbers', 'brain'],
-    source: '2048',
-    platform: 'Browser',
-    url: 'https://play2048.co/',
-    color: 'linear-gradient(135deg, #f59e0b, #f97316)',
-  },
-  {
-    id: 4,
-    title: 'Mini Basket',
-    genre: 'Sports',
-    category: 'Sports',
-    difficulty: 'Medium',
-    rating: '4.6',
-    description: 'Quick hoops, sharp timing, and satisfying score streaks.',
-    tags: ['basketball', 'arcade', 'quick'],
-    source: 'Poki',
-    platform: 'Browser',
-    url: 'https://poki.com/en/g/mini-basketball',
-    color: 'linear-gradient(135deg, #f97316, #ef4444)',
-  },
-  {
-    id: 5,
-    title: 'Retro Racer',
-    genre: 'Retro',
-    category: 'Retro',
-    difficulty: 'Medium',
-    rating: '4.8',
-    description: 'Classic road-racing vibes with a modern arcade twist.',
-    tags: ['retro', 'classic', 'driving'],
-    source: 'Classic Arcade',
-    platform: 'Browser',
-    url: 'https://www.retrogames.cc/',
-    color: 'linear-gradient(135deg, #0ea5e9, #2563eb)',
-  },
-  {
-    id: 6,
-    title: 'Bubble Burst',
-    genre: 'Casual',
-    category: 'Casual',
-    difficulty: 'Easy',
-    rating: '4.5',
-    description: 'Pop clusters, clear patterns, and enjoy color-matching fun.',
-    tags: ['casual', 'matching', 'color'],
-    source: 'Poki',
-    platform: 'Browser',
-    url: 'https://poki.com/en/g/bubble-shooter',
-    color: 'linear-gradient(135deg, #ec4899, #8b5cf6)',
-  },
-  {
-    id: 7,
-    title: 'Space Runner',
-    genre: 'Action',
-    category: 'Action',
-    difficulty: 'Hard',
-    rating: '4.7',
-    description: 'Dodge obstacles and survive an infinite wave of cosmic danger.',
-    tags: ['space', 'avoidance', 'scores'],
-    source: 'CrazyGames',
-    platform: 'Browser',
-    url: 'https://www.crazygames.com/',
-    color: 'linear-gradient(135deg, #38bdf8, #0f172a)',
-  },
-  {
-    id: 8,
-    title: 'Tetris',
-    genre: 'Puzzle',
-    category: 'Puzzle',
-    difficulty: 'Medium',
-    rating: '4.9',
-    description: 'Stack, clear, and survive against the rising wall of blocks.',
-    tags: ['classic', 'stacking', 'logic'],
-    source: 'Tetris',
-    platform: 'Browser',
-    url: 'https://tetris.com/play-tetris',
-    color: 'linear-gradient(135deg, #14b8a6, #22c55e)',
-  },
-  {
-    id: 9,
-    title: 'Snake Deluxe',
-    genre: 'Arcade',
-    category: 'Arcade',
-    difficulty: 'Medium',
-    rating: '4.6',
-    description: 'Swerve, grow, and chase the perfect no-crash run.',
-    tags: ['classic', 'snake', 'arcade'],
-    source: 'Poki',
-    platform: 'Browser',
-    url: 'https://poki.com/en/g/snake',
-    color: 'linear-gradient(135deg, #22c55e, #84cc16)',
-  },
-  {
-    id: 10,
-    title: 'Orbital Dash',
-    genre: 'Action',
-    category: 'Action',
-    difficulty: 'Hard',
-    rating: '4.7',
-    description: 'Keep your craft moving while dodging asteroid bursts.',
-    tags: ['space', 'dodging', 'fast'],
-    source: 'CrazyGames',
-    platform: 'Browser',
-    url: 'https://www.crazygames.com/',
-    color: 'linear-gradient(135deg, #7c3aed, #4f46e5)',
-  },
-  {
-    id: 11,
-    title: 'Puzzle Maze',
-    genre: 'Puzzle',
-    category: 'Puzzle',
-    difficulty: 'Easy',
-    rating: '4.4',
-    description: 'Map your route, avoid traps, and discover the exit.',
-    tags: ['maze', 'logic', 'mind'],
-    source: 'Poki',
-    platform: 'Browser',
-    url: 'https://poki.com/en/g/maze',
-    color: 'linear-gradient(135deg, #2dd4bf, #06b6d4)',
-  },
-  {
-    id: 12,
-    title: 'Goal Rush',
-    genre: 'Sports',
-    category: 'Sports',
-    difficulty: 'Medium',
-    rating: '4.5',
-    description: 'Score in bursts, build combos, and beat the clock.',
-    tags: ['soccer', 'time', 'arcade'],
-    source: 'Poki',
-    platform: 'Browser',
-    url: 'https://poki.com/en/g/football',
-    color: 'linear-gradient(135deg, #22c55e, #0ea5e9)',
-  },
-];
+  const filteredGames = useMemo(() => {
+    return retroGames.filter((game) => {
+      const matchesPlatform = platform === 'All' || game.platform === platform;
+      const haystack = `${game.title} ${game.genre} ${game.tags.join(' ')} ${game.platform}`.toLowerCase();
+      const matchesQuery = haystack.includes(query.toLowerCase());
+      return matchesPlatform && matchesQuery;
+    });
+  }, [platform, query]);
+
+  return (
+    <div className="retro-shell">
+      <header className="retro-header">
+        <div className="brand-lockup">
+          <div className="brand-icon">R</div>
+          <div>
+            <p className="eyebrow">RETRO EMULATOR PORTAL</p>
+            <h1>RetroArcade Plus</h1>
+          </div>
+        </div>
+
+        <nav className="nav-links">
+          <a href="#catalog">Browse</a>
+          <a href="#featured">Featured</a>
+          <a href="#play-now">Play Now</a>
+        </nav>
+      </header>
+
+      <main>
+        <section className="hero-panel" id="featured">
+          <div className="hero-copy">
+            <p className="badge">Golden age collection</p>
+            <h2>Play legendary classics from the 80s, 90s, and early 2000s.</h2>
+            <p>
+              Discover a curated public library of retro favorites across NES, SNES,
+              Genesis, Game Boy, arcade cabinets, and early Playstation titles.
+            </p>
+
+            <div className="hero-actions">
+              <button className="primary-btn" onClick={() => document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' })}>
+                Explore library
+              </button>
+              <button className="secondary-btn" onClick={() => setSelectedGame(retroGames[0])}>
+                Featured title
+              </button>
+            </div>
+
+            <div className="stats-grid">
+              {platformStats.map((stat) => (
+                <div key={stat.label} className="stat-box">
+                  <strong>{stat.value}</strong>
+                  <span>{stat.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="featured-console">
+            <div className="console-body">
+              <p className="mini-label">Featured system</p>
+              <h3>{featuredConsole.name}</h3>
+              <p>{featuredConsole.blurb}</p>
+              <div className="console-tags">
+                <span>NES</span>
+                <span>SNES</span>
+                <span>Genesis</span>
+                <span>Arcade</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="catalog" id="catalog">
+          <div className="catalog-head">
+            <div>
+              <p className="eyebrow alt">Library browser</p>
+              <h3>Browse by console</h3>
+            </div>
+            <label className="search-wrap">
+              <span>Search</span>
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search game title or genre"
+              />
+            </label>
+          </div>
+
+          <div className="filters">
+            {platformFilters.map((option) => (
+              <button
+                key={option}
+                className={platform === option ? 'filter active' : 'filter'}
+                onClick={() => setPlatform(option)}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+
+          <div className="game-grid">
+            {filteredGames.map((game) => (
+              <article key={game.id} className="game-card">
+                <div className="card-cover" style={{ background: game.color }}>
+                  <span>{game.platform}</span>
+                </div>
+                <div className="card-body">
+                  <div className="card-top">
+                    <h4>{game.title}</h4>
+                    <span>{game.rating}</span>
+                  </div>
+                  <p>{game.description}</p>
+                  <div className="tag-row">
+                    {game.tags.map((tag) => (
+                      <span key={tag} className="tag">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="card-footer">
+                    <small>
+                      {game.genre} • {game.era}
+                    </small>
+                    <button className="mini-btn" onClick={() => setSelectedGame(game)}>
+                      Details
+                    </button>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="play-panel" id="play-now">
+          <div className="play-header">
+            <p className="eyebrow alt">Play now</p>
+            <h3>Quick launch picks</h3>
+          </div>
+
+          <div className="launch-grid">
+            {filteredGames.slice(0, 4).map((game) => (
+              <div key={game.id} className="launch-tile" style={{ background: game.color }}>
+                <span>{game.platform}</span>
+                <h4>{game.title}</h4>
+                <p>{game.emulator}</p>
+                <a href={game.url} target="_blank" rel="noreferrer">
+                  Launch
+                </a>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      {selectedGame && (
+        <div className="modal-backdrop" onClick={() => setSelectedGame(null)}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-top">
+              <div>
+                <p className="eyebrow alt">Selected game</p>
+                <h3>{selectedGame.title}</h3>
+              </div>
+              <button className="close-btn" onClick={() => setSelectedGame(null)}>
+                ×
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <div className="modal-cover" style={{ background: selectedGame.color }}>
+                <span>{selectedGame.platform}</span>
+              </div>
+
+              <div className="modal-copy">
+                <p>{selectedGame.description}</p>
+                <ul>
+                  <li>Genre: {selectedGame.genre}</li>
+                  <li>Release: {selectedGame.era}</li>
+                  <li>Emulator: {selectedGame.emulator}</li>
+                  <li>Rating: {selectedGame.rating}/10</li>
+                </ul>
+                <div className="modal-actions">
+                  <a className="primary-btn" href={selectedGame.url} target="_blank" rel="noreferrer">
+                    Play now
+                  </a>
+                  <button className="secondary-btn" onClick={() => setSelectedGame(null)}>
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
